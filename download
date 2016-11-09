@@ -5,6 +5,8 @@
 #    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --version 0.1.0
 # Download and set custom path to binary file
 #    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --file 0.1.0
+# Show available versions
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --versions
 #
 # Source in master branch:
 #    https://raw.github.com/rikby/semversort/master/semversort.sh
@@ -19,6 +21,7 @@ version=0.1.0
 output_file='/usr/local/bin/semversort'
 action='download'
 base_url='https://github.com/rikby/semversort'
+base_api_url='https://api.github.com/repos/rikby/semversort'
 
 # validate and redefine options
 OPTS=`getopt -o lv:f: -l versions,version:,file: -- "$@"`
@@ -50,7 +53,7 @@ while true; do
 done
 
 if [ 'versions' == "${action}" ]; then
-  curl -Ls https://api.github.com/repos/rikby/semversort/tags | grep '"name"' | cut -d '"' -f 4
+  curl -Ls ${base_api_url}/tags | grep '"name"' | cut -d '"' -f 4
   exit 0
 fi
 
@@ -60,8 +63,8 @@ if [ ! -f "${output_file}" ]; then
   touch ${output_file}
 fi
 
-echo "Fetching https://github.com/rikby/semversort/releases/download/${version}/semversort..."
-http_code=$(curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort \
+echo "Fetching ${base_url}/download/${version}/semversort..."
+http_code=$(curl -Ls ${base_url}/releases/download/${version}/semversort \
   --fail -w '%{http_code}' --output ${output_file} || err=$?)
 
 if [ '200' != "${http_code}" ]; then

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 # Download this gist
-#    curl -Ls https://gist.github.com/andkirby/54204328823febad9d34422427b1937b/raw/semversort.sh | bash
+#    curl -Ls https://github.com/rikby/semversort/releases/download/0.1.0/semversort | bash
 # And run:
 #    $ semversort 1.0 1.0-rc 1.0-patch 1.0-alpha
 # or in GIT
 #    $ semversort $(git tag)
 # Using pipeline:
 #    $ echo 1.0 1.0-rc 1.0-patch 1.0-alpha | semversort
-#
 #
 # 2016-11-03
 
@@ -16,14 +15,17 @@ set -o pipefail
 set -o nounset
 #set -o xtrace
 
-# Script running with pipeline
+# Script running with pipeline executing
 if [ -z "${BASH_SOURCE[0]:-}" ]; then
   __dir=/usr/local/bin
   if [ ! -d ${__dir} ]; then
     __dir=/usr/bin
   fi
+
+  version=${1:-0.1.0}
+
   __file=${__dir}/semversort
-  curl -Ls https://gist.github.com/andkirby/54204328823febad9d34422427b1937b/raw/semversort.sh -o ${__file} && \
+  curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort -o ${__file} && \
     chmod u+x ${__file} && \
     echo 'Semantic version sort: '${__file} && \
     exit 0
@@ -51,11 +53,12 @@ version_weight () {
     sed -r 's:\.$::' | \
     sed -r 's:-\.:.:'
 }
+
 tags_orig=(${versions_list})
 tags_weight=( $(version_weight "${tags_orig[*]}") )
 
 keys=$(for ix in ${!tags_weight[*]}; do
-    printf "%s+%s\n" "${tags_weight[${ix}]}" ${ix}
+  printf "%s+%s\n" "${tags_weight[${ix}]}" ${ix}
 done | sort -V | cut -d+ -f2)
 
 for ix in ${keys}; do

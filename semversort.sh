@@ -20,6 +20,23 @@ set -o pipefail
 set -o nounset
 #set -o xtrace
 
+show_help () {
+  cat <<-EOF
+Versions sorting 0.2.0
+  $ semversort VERSION1 VERSION2 ... VERSION100
+
+Show this help
+  $ semversort --help
+
+Sort versions
+  $ semversort 1.0 1.0-rc 1.0-patch 1.0-alpha
+Sort GIT tags
+  $ semversort \$(git tag)
+Sort versions Using pipeline:
+  $ echo 1.0 1.0-rc 1.0-patch 1.0-alpha | semversort
+EOF
+}
+
 # Script running with pipeline executing
 if [ -z "${BASH_SOURCE[0]:-}" ]; then
   __dir=/usr/local/bin
@@ -27,7 +44,7 @@ if [ -z "${BASH_SOURCE[0]:-}" ]; then
     __dir=/usr/bin
   fi
 
-  version=${1:-0.1.0}
+  version=${1:-0.2.0}
 
   __file=${__dir}/semversort
   curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort -o ${__file} && \
@@ -42,6 +59,12 @@ if [ -t 0 ]; then
 else
   # catch pipeline output
   versions_list=$(cat)
+fi
+
+if [ -z "${versions_list}" ] || [[ "${versions_list:-}" =~ --help ]]; then
+  # no versions
+  show_help
+  exit 0
 fi
 
 version_weight () {
@@ -60,6 +83,7 @@ version_weight () {
 }
 
 tags_orig=(${versions_list})
+
 tags_weight=( $(version_weight "${tags_orig[*]}") )
 
 keys=$(for ix in ${!tags_weight[*]}; do

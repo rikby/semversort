@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 # Download
-#    curl -Ls https://github.com/rikby/semversort/releases/download/0.1.0/semversort | bash
-# And run:
-#    $ semversort 1.0 1.0-rc 1.0-patch 1.0-alpha
-# or in GIT
-#    $ semversort $(git tag)
-# Using pipeline:
-#    $ echo 1.0 1.0-rc 1.0-patch 1.0-alpha | semversort
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash
+# Download particular version
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- 0.2.0
 #
-# 2016-11-03
+# Source in master branch:
+#    https://raw.github.com/rikby/semversort/master/semversort.sh
+#
 
 set -o errexit
 set -o pipefail
@@ -25,9 +23,14 @@ if [ -z "${BASH_SOURCE[0]:-}" ]; then
   version=${1:-0.1.0}
 
   __file=${__dir}/semversort
-  curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort -o ${__file} && \
-    chmod u+x ${__file} && \
+  echo "Fetching https://github.com/rikby/semversort/releases/download/${version}/semversort..."
+
+  curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort --output ${__file} --fail || \
+    err=$? && echo "error: [${err}] No such version or bad connection." && exit ${err}
+
+  chmod u+x ${__file} && \
     echo 'Semantic version sort: '${__file} && \
     exit 0
+
   exit 1
 fi

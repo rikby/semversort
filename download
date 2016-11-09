@@ -2,7 +2,9 @@
 # Download
 #    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash
 # Download particular version
-#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- 0.1.0
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --version 0.1.0
+# Download and set custom path to binary file
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --file 0.1.0
 #
 # Source in master branch:
 #    https://raw.github.com/rikby/semversort/master/semversort.sh
@@ -13,18 +15,55 @@ set -o pipefail
 set -o nounset
 #set -o xtrace
 
-__dir=/usr/local/bin
-if [ ! -d ${__dir} ]; then
-  __dir=/usr/bin
+version=0.1.0
+output_file=/usr/local/bin/semversort
+
+# validate and redefine options
+OPTS=`getopt -o v:f: -l version:,file: -- "$@"`
+eval set -- "${OPTS}"
+
+while true; do
+  case "${1}" in
+    --version|-v)
+      version="$2";
+      shift 2;
+      ;;
+    --file|-f)
+      output_file="$2";
+      shift 2;
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      echo "${0}: unparseable option ${1}."
+      exit 3
+      ;;
+  esac
+done
+
+
+no_file=0
+if [ ! -f "${output_file}" ]; then
+  no_file=1
+  touch ${output_file}
 fi
 
-version=${1:-0.1.0}
-
-__file=${__dir}/semversort
 echo "Fetching https://github.com/rikby/semversort/releases/download/${version}/semversort..."
+http_code=$(curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort \
+  --fail -w '%{http_code}' --output ${output_file} || err=$?)
 
-curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort --output ${__file} --fail || \
-  err=$? && echo "error: [${err}] No such version or bad connection." && exit ${err}
+if [ '200' != "${http_code}" ]; then
+  echo "error: [${http_code}] No such version or bad connection."
+  if [ ${no_file} == 1 ]; then
+    rm -rf ${output_file}
+  fi
+  exit 8
+fi
 
-chmod u+x ${__file} && \
-  echo 'Semantic version sort: '${__file}
+if [[ ! "$(uname -a)" =~ 'Msys' ]]; then
+  chmod +x ${output_file}
+fi
+echo 'Semantic version sort: '${output_file}
+

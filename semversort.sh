@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-# Download this gist
-#    curl -Ls https://github.com/rikby/semversort/releases/download/0.1.0/semversort | bash
+# Download
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash
+# Download particular version
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --version 0.1.0
+# Download and set custom path to binary file
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --file /usr/local/bin/semverfile
+#
 # And run:
 #    $ semversort 1.0 1.0-rc 1.0-patch 1.0-alpha
 # or in GIT

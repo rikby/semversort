@@ -27,7 +27,4 @@ curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semver
   err=$? && echo "error: [${err}] No such version or bad connection." && exit ${err}
 
 chmod u+x ${__file} && \
-  echo 'Semantic version sort: '${__file} && \
-  exit 0
-
-exit 1
+  echo 'Semantic version sort: '${__file}

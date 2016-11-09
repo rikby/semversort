@@ -4,7 +4,7 @@
 # Download particular version
 #    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --version 0.1.0
 # Download and set custom path to binary file
-#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --file 0.1.0
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --file /usr/bin/semversort
 # Show available versions
 #    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- --versions
 #

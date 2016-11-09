@@ -17,7 +17,7 @@ set -o pipefail
 set -o nounset
 #set -o xtrace
 
-version=0.1.0
+version=0.2.0
 output_file='/usr/local/bin/semversort'
 action='download'
 base_url='https://github.com/rikby/semversort'

@@ -7,6 +7,7 @@ Also, it supports sorting patches like `1.2.3-patch.4` but native [SemVer](https
 If you use only valid Semantic versions, you may use [SemVer](https://github.com/npm/node-semver) app written on NodeJS.
 
 ## Versions
+- 0.2.0
 - 0.1.0
 
 ## Download latest version

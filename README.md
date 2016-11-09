@@ -2,7 +2,7 @@
 SemVer Sort / Versions sorting
 
 It project doesn't validate schema, it's more or less similar to the PHP function [`version_sort`](http://php.net/version_sort) algorithm.
-Also, it supports sorting patches, native [SemVer](https://github.com/npm/node-semver) doesn't.
+Also, it supports sorting patches like `1.2.3-patch.4` but native [SemVer](https://github.com/npm/node-semver) doesn't.
 
 If you use only valid Semantic versions, you may use [SemVer](https://github.com/npm/node-semver) app written on NodeJS.
 

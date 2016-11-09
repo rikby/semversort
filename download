@@ -2,7 +2,7 @@
 # Download
 #    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash
 # Download particular version
-#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- 0.2.0
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- 0.1.0
 #
 # Source in master branch:
 #    https://raw.github.com/rikby/semversort/master/semversort.sh

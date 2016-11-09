@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Download
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash
+# Download particular version
+#    curl -Ls https://raw.github.com/rikby/semversort/master/download | bash -s -- 0.1.0
+#
+# Source in master branch:
+#    https://raw.github.com/rikby/semversort/master/semversort.sh
+#
+
+set -o errexit
+set -o pipefail
+set -o nounset
+#set -o xtrace
+
+__dir=/usr/local/bin
+if [ ! -d ${__dir} ]; then
+  __dir=/usr/bin
+fi
+
+version=${1:-0.1.0}
+
+__file=${__dir}/semversort
+echo "Fetching https://github.com/rikby/semversort/releases/download/${version}/semversort..."
+
+curl -Ls https://github.com/rikby/semversort/releases/download/${version}/semversort --output ${__file} --fail || \
+  err=$? && echo "error: [${err}] No such version or bad connection." && exit ${err}
+
+chmod u+x ${__file} && \
+  echo 'Semantic version sort: '${__file}

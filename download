@@ -20,7 +20,7 @@ set -o nounset
 version=0.2.0
 output_file='/usr/local/bin/semversort'
 action='download'
-base_url='https://github.com/rikby/semversort'
+base_url='https://raw.github.com/rikby/semversort'
 base_api_url='https://api.github.com/repos/rikby/semversort'
 
 # validate and redefine options
@@ -63,8 +63,8 @@ if [ ! -f "${output_file}" ]; then
   touch ${output_file}
 fi
 
-echo "Fetching ${base_url}/download/${version}/semversort..."
-http_code=$(curl -Ls ${base_url}/releases/download/${version}/semversort \
+echo "Fetching ${base_url}/${version}/semversort.sh..."
+http_code=$(curl -Ls ${base_url}/${version}/semversort.sh \
   --fail -w '%{http_code}' --output ${output_file} || err=$?)
 
 if [ '200' != "${http_code}" ]; then

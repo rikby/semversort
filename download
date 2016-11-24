@@ -14,7 +14,7 @@
 #    https://raw.github.com/rikby/semversort/master/semversort.sh
 
 # Download last version
-$ curl -Ls https://raw.github.com/rikby/bin-downloader/master/download | bash -s -- \
+curl -Ls https://raw.github.com/rikby/bin-downloader/master/download | bash -s -- \
     rikby/semversort \
     semversort.sh --filename semversort -- $@
 
